@@ -1,0 +1,24 @@
+{
+  "name": "kuzzle-plugin-logger",
+  "version": "1.0.0",
+  "description": "Kuzzle plugin that handle log",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "istanbul test _mocha --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuzzleio/kuzzle-plugin-logger.git"
+  },
+  "keywords": [
+    "kuzzle",
+    "plugin",
+    "logger"
+  ],
+  "author": "Kuzzle Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kuzzleio/kuzzle-plugin-logger/issues"
+  },
+  "homepage": "https://github.com/kuzzleio/kuzzle-plugin-logger#readme"
+}
