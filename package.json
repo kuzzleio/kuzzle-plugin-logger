@@ -1,7 +1,7 @@
 {
   "name": "kuzzle-plugin-logger",
   "version": "1.0.0",
-  "description": "Kuzzle plugin that handle log",
+  "description": "Kuzzle plugin that handle logs",
   "main": "./lib/index.js",
   "scripts": {
     "test": "istanbul test _mocha --coverage"
