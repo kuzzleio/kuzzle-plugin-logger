@@ -13,12 +13,18 @@
   "keywords": [
     "kuzzle",
     "plugin",
-    "logger"
+    "logger",
+    "captains-log"
   ],
   "author": "Kuzzle Team",
-  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/kuzzleio/kuzzle-plugin-logger/issues"
   },
-  "homepage": "https://github.com/kuzzleio/kuzzle-plugin-logger#readme"
+  "pluginInfo": {
+    "config": {
+      "use": "captains-log",
+      "level": "info"
+    }
+  },
+  "license": "Apache-2.0"
 }
