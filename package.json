@@ -21,7 +21,7 @@
     "url": "https://github.com/kuzzleio/kuzzle-plugin-logger/issues"
   },
   "pluginInfo": {
-    "config": {
+    "defaultConfig": {
       "use": "captains-log",
       "level": "info"
     }
