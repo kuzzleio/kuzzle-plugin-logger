@@ -23,8 +23,12 @@
   "pluginInfo": {
     "defaultConfig": {
       "use": "captains-log",
-      "level": "info"
+      "level": "info",
+      "addDate": true
     }
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "winston": "^1.0.1"
+  }
 }
