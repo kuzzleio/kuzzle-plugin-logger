@@ -22,7 +22,7 @@
   },
   "pluginInfo": {
     "defaultConfig": {
-      "use": "captains-log",
+      "use": "winston",
       "level": "info",
       "addDate": true
     }
