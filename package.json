@@ -23,7 +23,7 @@
   "pluginInfo": {
     "defaultConfig": {
       "use": "winston",
-      "level": "info",
+      "level": "error",
       "addDate": true
     }
   },
