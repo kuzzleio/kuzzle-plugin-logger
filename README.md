@@ -18,7 +18,7 @@ Configuration that you can override in your `config/customPlugins.json` file in 
 
 | Name | Default value | Available | Description                 |
 |------|---------------|-----------|-----------------------------|
-| use  | `winston`     | `winston` | Define which logger to use. |
+| service  | `winston`     | `winston` | Define which logger to use. |
 | level | `info`   | in ascending order: `silly`, `verbose`, `info`, `debug`, `warn`, `error` | Debug level to apply. Messages with a lower level are not logged. |
 | addDate | `true` | `true` / `false` | Define if you want to prefix your messages with the date. |
 
