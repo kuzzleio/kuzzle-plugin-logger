@@ -4,7 +4,7 @@
 
 # Plugin logger
 
-This plugin allow to log messages from Kuzzle with:
+This plugin allow to log messages from [Kuzzle](https://github.com/kuzzleio/kuzzle) with:
 * winston (implemented)
 * logstash (not implemented yet)
 
@@ -26,7 +26,7 @@ Configuration that you can override in your `config/customPlugins.json` file in 
 
 # About Kuzzle
 
-For UI and linked objects developers, Kuzzle is an open-source solution that handles all the data management
-(CRUD, real-time storage, search, high-level features, etc;).
+For UI and linked objects developers, [Kuzzle](https://github.com/kuzzleio/kuzzle) is an open-source solution that handles all the data management
+(CRUD, real-time storage, search, high-level features, etc).
 
-Kuzzle features are accessible through a secured API. It can be used through a large choice of protocols such as REST, Websocket or Message Queuing protocols.
+[Kuzzle](https://github.com/kuzzleio/kuzzle) features are accessible through a secured API. It can be used through a large choice of protocols such as REST, Websocket or Message Queuing protocols.
