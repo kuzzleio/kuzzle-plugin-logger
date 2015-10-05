@@ -1,3 +1,5 @@
+
+
 ![logo](https://github.com/kuzzleio/kuzzle/blob/master/docs/images/logo.png)
 
 # Plugin logger
