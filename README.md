@@ -24,6 +24,10 @@ You can override the configuration in your `config/customPlugins.json` file in K
 | level | `info`   | in ascending order: `silly`, `verbose`, `info`, `debug`, `warn`, `error` | Debug level to apply. Messages with a lower level are not logged. |
 | addDate | `true` | `true` / `false` | Define if you want to prefix your messages with the date. |
 
+# How to create a plugin
+
+See [Kuzzle documentation](https://github.com/kuzzleio/kuzzle/docs/plugins.md) about plugin for more information about how to create your own plugin.
+
 # About Kuzzle
 
 For UI and linked objects developers, [Kuzzle](https://github.com/kuzzleio/kuzzle) is an open-source solution that handles all the data management
