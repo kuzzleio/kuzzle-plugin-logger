@@ -4,7 +4,7 @@
 
 # Plugin logger
 
-This plugin allow to log messages from [Kuzzle](https://github.com/kuzzleio/kuzzle) with:
+This plugin allows to log messages from [Kuzzle](https://github.com/kuzzleio/kuzzle) with:
 * winston (implemented)
 * logstash (not implemented yet)
 
@@ -16,7 +16,7 @@ This plugin doesn't need any right.
 
 # Configuration
 
-Configuration that you can override in your `config/customPlugins.json` file in Kuzzle:
+You can override the configuration in your `config/customPlugins.json` file in Kuzzle:
 
 | Name | Default value | Available | Description                 |
 |------|---------------|-----------|-----------------------------|
