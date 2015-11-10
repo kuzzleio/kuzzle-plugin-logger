@@ -1,15 +1,21 @@
 language: node_js
 node_js:
-  - 0.12.0
-
+- 4.2
 before_script:
-  - npm install -g grunt-cli
-
+- npm install -g grunt-cli
 notifications:
   webhooks:
     urls:
-      - https://webhooks.gitter.im/e/8e145155fbaaf37cffea
+    - https://webhooks.gitter.im/e/8e145155fbaaf37cffea
     on_success: change
     on_failure: always
     on_start: never
   email: false
+deploy:
+  provider: npm
+  email: support@kuzzle.io
+  api_key:
+    secure: CXFWmETNvo1LpQE316anYhONrZca+Cotnl34f0jyvra5jEjvsUTDGlFjY7sSvYC31Gaerpts/5mbgBYbNhYomdlNrA2eJEsH2QxSYadoU97yily42nitHcULPDEbTr90hcLK0iNz1ljw0zJL3UqPB/qYJhfy26vOGYlo5k530Q/2xrJVwto/jVMSSI+dtbOYfKgTsbNvFW1kQHOrYTwqjqTbEvdSHw0e3dlAzjQvAXLLNtt+UnSpUzbNMnjNPAvpH5i/ca0eChoFbhAgE1frsc9zk22E14y8ROoDkVwA2jyOZu0p0D+Qd6NWy4LX6JJDEigmxpFqpg16WvSJWhFHcITGCTphwXT2K8yktlfnQKCAY4+/9qpVVaGGBjcRZVU3yzZsQoa7/WmgvoBveznA0niGTbKAZVY+8BkGS03oeD7ZXxKY/ZHatStMJs5sOS5yxRKTyqm2N3VXB9rEu0+uPM1fv7egZ2hM8VIoTsDg4PKb3uvpRM6L2lvXYAMtXOQSgKBtFlswXldrvPyUemNHtWsZyay4S8CNtHQjLwvfbkAb8ukgWq3L68rUV4IoiUFqUETbDHi3CcCEGu7ruL/LMIU6x0umZpIXp9HJAz3MFYnokElaebv5JZ4Ld5O+Z4db0kIOWKNAmaeeYBjP3m0cjcc2LSeo/DkKsUZ1WbVbEMM=
+  on:
+    repo: kuzzleio/kuzzle-plugin-logger
+    branch: master
