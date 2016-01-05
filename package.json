@@ -1,6 +1,6 @@
 {
   "name": "kuzzle-plugin-logger",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
@@ -24,7 +24,8 @@
     "defaultConfig": {
       "service": "winston",
       "level": "info",
-      "addDate": true
+      "addDate": true,
+      "loadedBy": "all"
     }
   },
   "license": "Apache-2.0",
