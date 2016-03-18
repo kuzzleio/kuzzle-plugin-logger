@@ -16,8 +16,9 @@ This plugin doesn't need any right.
 
 # Configuration
 
-You can override the configuration in your `config/customPlugins.json` file in Kuzzle.
-You can choose multi services.
+You can override the configuration in your `config/customPlugins.json` file in Kuzzle.  
+You can choose multiple services.  
+A service set of configurations depends on the type of service.
 
 By default, the configuration is:
 
@@ -48,17 +49,17 @@ By default, the configuration is:
 ```
 
 That means:
-* We use the service `file` for write logs in a file.
+* We use the service `file` to write logs in a file.
  * Prefix logs with the date
- * Errors are write in a file `kuzzle-error.log`
- * Warnings are write in a file `kuzzle-warning.log`
+ * Errors are written in a file `kuzzle-error.log`
+ * Warnings are written in a file `kuzzle-warning.log`
 * We use the standard output
  * Prefix logs with the date
- * Info logs are displayed
+ * Info logs are displayed (via stdout)
 
 ## stdout
 
-For this service `stdout`, this configuration is available:
+For the service `stdout`, these configurations are available:
 
 | Name | Default value | Available | Description                 |
 |------|---------------|-----------|-----------------------------|
@@ -67,7 +68,7 @@ For this service `stdout`, this configuration is available:
 
 ## file
 
-For this service `file`, this configuration is available:
+For the service `file`, these configurations are available:
 
 | Name | Default value | Available | Description                 |
 |------|---------------|-----------|-----------------------------|
