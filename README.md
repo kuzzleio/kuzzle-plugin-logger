@@ -63,7 +63,7 @@ For the service `stdout`, these configurations are available:
 
 | Name | Default value | Available | Description                 |
 |------|---------------|-----------|-----------------------------|
-| level | `info`   | in ascending order: `silly`, `verbose`, `info`, `debug`, `warn`, `error` | Debug level to apply. Messages with a lower level are not logged. |
+| level | `error`   | in ascending order: `silly`, `verbose`, `info`, `debug`, `warn`, `error` | Debug level to apply. Messages with a lower level are not logged. |
 | addDate | `true` | `true` / `false` | Define if you want to prefix your messages with the date. |
 
 ## file
@@ -80,7 +80,7 @@ The attribute `outputs` contains an entry for each strategies that we want defin
 
 | Name | Default value | Available | Description                 |
 |------|---------------|-----------|-----------------------------|
-| level | `info`   | in ascending order: `silly`, `verbose`, `info`, `debug`, `warn`, `error` | Debug level to apply. Messages with a lower level are not logged. |
+| level | `error`   | in ascending order: `silly`, `verbose`, `info`, `debug`, `warn`, `error` | Debug level to apply. Messages with a lower level are not logged. |
 | filename | `null` | / | The path where the log will be saved. |
 
 # How to create a plugin

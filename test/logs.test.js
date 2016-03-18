@@ -43,11 +43,11 @@ describe('The plugin logger', function () {
       nbCalled = 0;
 
     // Mock the logger function
-    pluginLogger.logger = {
+    pluginLogger.loggers = [{
       log: function () {
         nbCalled++;
       }
-    };
+    }];
     pluginLogger.isDummy = false;
 
     definedFunctions.forEach(function (fn) {
