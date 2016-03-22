@@ -1,6 +1,6 @@
 {
   "name": "kuzzle-plugin-logger",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
@@ -22,15 +22,31 @@
   },
   "pluginInfo": {
     "defaultConfig": {
-      "service": "winston",
-      "level": "info",
-      "addDate": true,
+      "services": {
+        "file": {
+          "outputs": {
+            "error": {
+              "level": "error",
+              "filename": "kuzzle-error.log"
+            },
+            "warning": {
+              "level": "warn",
+              "filename": "kuzzle-warning.log"
+            }
+          },
+          "addDate": true
+        },
+        "stdout": {
+          "level": "info",
+          "addDate": true
+        }
+      },
       "loadedBy": "all"
     }
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "winston": "2.1.1"
+    "winston": "2.2.0"
   },
   "devDependencies" : {
     "eslint": "1.10.3",
