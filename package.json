@@ -35,10 +35,6 @@
             }
           },
           "addDate": true
-        },
-        "stdout": {
-          "level": "info",
-          "addDate": true
         }
       },
       "loadedBy": "all"
