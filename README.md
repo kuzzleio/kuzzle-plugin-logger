@@ -39,10 +39,6 @@ By default, the configuration is:
         }
       },
       "addDate": true
-    },
-    "stdout": {
-      "level": "info",
-      "addDate": true
     }
   }
 }
@@ -53,9 +49,6 @@ That means:
  * Prefix logs with the date
  * Errors are written in a file `kuzzle-error.log`
  * Warnings are written in a file `kuzzle-warning.log`
-* We use the standard output
- * Prefix logs with the date
- * Info logs are displayed (via stdout)
 
 ## stdout
 
