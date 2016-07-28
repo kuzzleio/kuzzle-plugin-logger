@@ -1,10 +1,12 @@
 {
   "name": "kuzzle-plugin-logger",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "grunt && mocha"
+    "test": "npm run --silent lint && npm run --silent unit-tests",
+    "unit-tests": "istanbul test _mocha",
+    "lint": "eslint --max-warnings=0 ./test ./lib"
   },
   "repository": {
     "type": "git",
@@ -26,15 +28,14 @@
         "file": {
           "outputs": {
             "error": {
-              "level": "error",
-              "filename": "kuzzle-error.log"
-            },
-            "warning": {
               "level": "warn",
-              "filename": "kuzzle-warning.log"
+              "filename": "kuzzle.log"
             }
           },
           "addDate": true
+        },
+        "stdout": {
+          "level": "info"
         }
       },
       "loadedBy": "all"
@@ -42,15 +43,18 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "winston": "2.2.0"
+    "moment": "^2.14.1",
+    "winston": "2.2.0",
+    "winston-syslog": "^1.2.1"
   },
-  "devDependencies" : {
+  "devDependencies": {
     "eslint": "2.5.3",
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^1.0.0",
-    "gruntify-eslint": "^2.0.0",
+    "istanbul": "^0.4.4",
     "mocha": "2.4.5",
+    "rewire": "^2.5.2",
     "should": "8.3.0",
-    "rewire": "2.5.1"
-  }
+    "should-sinon": "0.0.5",
+    "sinon": "^1.17.5"
+  },
+  "_from": "kuzzle-plugin-logger@2.0.3"
 }
