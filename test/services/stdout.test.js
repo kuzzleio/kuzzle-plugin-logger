@@ -1,82 +1,56 @@
 var
+  rewire = require('rewire'),
+  sinon = require('sinon'),
   should = require('should'),
-  serviceStdout = require('../../lib/services/stdout');
+  serviceStdout = rewire('../../lib/services/stdout');
 
-describe('The stdout service', function () {
+describe('services/stdout', function () {
+  var
+    log = function () {},
+    winstonMock,
+    reset;
 
-  it('should have a function init', function () {
-    should(serviceStdout.init).be.Function();
+  beforeEach(() => {
+    reset = serviceStdout.__set__({
+      winston: {
+        Logger: sinon.spy(),
+        transports: {
+          Console: sinon.spy()
+        }
+      }
+    });
+    winstonMock = serviceStdout.__get__('winston');
   });
 
-  it('should set the level to error if config is not provided', function () {
-
-    serviceStdout.init({addDate: false});
-
-    should(serviceStdout.winston.transports.console).have.property('level');
-    should(serviceStdout.winston.transports.console.level).be.exactly('error');
+  afterEach(() => {
+    reset();
   });
 
-  it('should set the level if config is provided', function () {
-    serviceStdout.init({level: 'info', addDate: false});
+  it('should set the default values if none are provided', () => {
+    serviceStdout.init({}, log);
 
-    should(serviceStdout.winston.transports.console).have.property('level');
-    should(serviceStdout.winston.transports.console.level).be.exactly('info');
+    should(serviceStdout.addDate).be.true();
+    should(serviceStdout.dateFormat).be.undefined();
+    should(serviceStdout.log).be.eql(log.bind(serviceStdout));
+    should(winstonMock.Logger).be.calledOnce();
+    should(winstonMock.transports.Console).be.calledOnce();
+    should(winstonMock.transports.Console).be.calledWith({
+      level: 'error'
+    });
   });
 
-  it('should log object without date if addDate is false in config', function () {
-    serviceStdout.init({level: 'debug', addDate: false});
+  it('should use the given parameters', () => {
+    serviceStdout.init({level: 'debug', addDate: 'addDate', dateFormat: 'dateFormat'}, log);
 
-    // Mock the winston module
-    serviceStdout.winston.log = function (level, prefix, message) {
-      should(level).be.exactly('debug');
-      should(prefix).be.exactly('event: ');
+    should(serviceStdout.addDate).be.exactly('addDate');
+    should(serviceStdout.dateFormat).be.exactly('dateFormat');
+    should(serviceStdout.log).be.eql(log.bind(serviceStdout));
+    should(winstonMock.Logger).be.calledOnce();
+    should(winstonMock.transports.Console).be.calledOnce();
+    should(winstonMock.transports.Console).be.calledWith({
+      level: 'debug'
+    });
 
-      should(message).be.Object();
-      should(message).have.property('foo');
-      should(message.foo).be.exactly('bar');
-    };
-
-    serviceStdout.log('debug', 'event', {foo: 'bar'});
   });
 
-  it('should log object with date if addDate is true in config', function () {
-    serviceStdout.init({level: 'debug', addDate: true});
-
-    // Mock the winston module
-    serviceStdout.winston.log = function (level, prefix, message) {
-      should(level).be.exactly('debug');
-      // Something like "[2015-10-05T14:28:09.580Z]:event: "
-      should(prefix).match(/^\[\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+Z\]: event: $/);
-
-      should(message).be.Object();
-      should(message).have.property('foo');
-      should(message.foo).be.exactly('bar');
-    };
-
-    serviceStdout.log('debug', 'event', {foo: 'bar'});
-  });
-
-  it('should log as message if it\'s not an object', function () {
-    serviceStdout.init({level: 'debug', addDate: false});
-
-    // Mock the winston module
-    serviceStdout.winston.log = function (level, message) {
-      should(level).be.exactly('debug');
-      should(message).be.exactly('event: foo');
-    };
-
-    serviceStdout.log('debug', 'event', 'foo');
-  });
-
-  it('should log as message and add date if addDate is true', function () {
-    serviceStdout.init({level: 'debug', addDate: true});
-
-    // Mock the winston module
-    serviceStdout.winston.log = function (level, message) {
-      should(level).be.exactly('debug');
-      should(message).match(/^\[\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+Z\]: event: foo$/);
-    };
-
-    serviceStdout.log('debug', 'event', 'foo');
-  });
 });

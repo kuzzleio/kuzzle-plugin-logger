@@ -1,88 +1,72 @@
 [![Build Status](https://travis-ci.org/kuzzleio/kuzzle-plugin-logger.svg?branch=master)](https://travis-ci.org/kuzzleio/kuzzle-plugin-logger)
+![logo](http://kuzzle.io/images/logoS.png)
 
-![logo](https://raw.githubusercontent.com/kuzzleio/kuzzle/master/docs/images/logo.png)
+# Kuzzle logger plugin
 
-# Plugin logger
+This plugin is a bridge between Kuzzle and [winston](https://www.npmjs.com/package/winston) package.
+It is part of the default plugins provided with Kuzzle.
 
-This plugin allows to log messages from [Kuzzle](https://github.com/kuzzleio/kuzzle) with:
-* stdout: output logs directly in standard output
-* file: write logs in files
+Currently, three winston transports are supported:
 
-By default, this plugin is already installed in Kuzzle.
+* `stdout` (winston `Console`)
+* `file` (winston `File`)
+* `syslog` (from [winston-syslog](https://www.npmjs.com/package/winston-syslog))
 
-# Manifest
+
+## Manifest
 
 This plugin doesn't need any right.
 
-# Configuration
+## Configuration
 
-You can override the configuration in your `config/customPlugins.json` file in Kuzzle.  
-You can choose multiple services.  
-A service set of configurations depends on the type of service.
-
-By default, the configuration is:
+Sample:
 
 ```json
 {
   "services": {
     "file": {
-      "outputs": {
-        "error": {
-          "level": "error",
-          "name": "error-file",
-          "filename": "kuzzle-error.log"
-        },
-        "warning": {
-          "level": "warn",
-          "name": "warning-file",
-          "filename": "kuzzle-warning.log"
-        }
-      },
+      "level": "warn",
+      "filename": "kuzzle.log",
       "addDate": true
+    },
+    "stdout": {
+      "level": "info",
+      "addDate": "true"
+    },
+    "syslog": {
+      "protocol": "unix",
+      "path": "/dev/log",
+      "facility": "local6"
     }
   }
 }
 ```
 
-That means:
-* We use the service `file` to write logs in a file.
- * Prefix logs with the date
- * Errors are written in a file `kuzzle-error.log`
- * Warnings are written in a file `kuzzle-warning.log`
-
 ## stdout
 
-For the service `stdout`, these configurations are available:
-
-| Name | Default value | Available | Description                 |
-|------|---------------|-----------|-----------------------------|
-| level | `error`   | in ascending order: `silly`, `verbose`, `info`, `debug`, `warn`, `error` | Logging level to apply. Messages with a lower level are not logged. |
-| addDate | `true` | `true` / `false` | Define if you want to prefix your messages with the date. |
+* **level**: maximal level to log (Default: `error`)
+* **addDate** `true|false` if set to true, prefix all logs with the current date (default: `true`)
+* **dateFormat**: A string in [moment format syntax](http://momentjs.com/docs/#/displaying/) used to format the prefixed date (Default: ISO8601: `YYYY-MM-DDTHH:mm:ssZ`).
 
 ## file
 
-For the service `file`, these configurations are available:
+* **level**: maximal level to log (Default: `error`)
+* **filename**: path of the log file (Default: `kuzzle.log`)
+* **addDate** `true|false` if set to true, prefix all logs with the current date (default: `true`)
+* **dateFormat**: A string in [moment format syntax](http://momentjs.com/docs/#/displaying/) used to format the prefixed date (Default: ISO8601: `YYYY-MM-DDTHH:mm:ssZ`).
 
-| Name | Default value | Available | Description                 |
-|------|---------------|-----------|-----------------------------|
-| outputs | `null` | / | `outputs` is an object listing where to write each logs levels |
-| addDate | `true` | `true` / `false` | Define if you want to prefix your messages with the date. |
+## syslog
 
-
-The attribute `outputs` contains an entry for each strategies that we want define. Each definitions contain:
-
-| Name | Default value | Available | Description                 |
-|------|---------------|-----------|-----------------------------|
-| level | `error`   | In ascending order: `silly`, `verbose`, `info`, `debug`, `warn`, `error` | Logging level to apply. Messages with a lower level are not logged. |
-| filename | `null` | / | The path where the log will be saved. |
+In addition to the `level`, `addDate`, ans `dateFormat` parameter, the syslog configuration takes the same parameters as [winston-syslog](https://github.com/winstonjs/winston-syslog) module ones.
 
 # How to create a plugin
 
-See [Kuzzle documentation](https://github.com/kuzzleio/kuzzle/blob/develop/docs/plugins.md) about plugin for more information about how to create your own plugin.
+Please refer to [Kuzzle plugin documentation](http://kuzzle.io/guide/#plugins) for more information on how to build you own plugins.
 
 # About Kuzzle
 
-For UI and linked objects developers, [Kuzzle](https://github.com/kuzzleio/kuzzle) is an open-source solution that handles all the data management
-(CRUD, real-time storage, search, high-level features, etc).
+Kuzzle is an open-source back-end solution for various applications. 
 
-[Kuzzle](https://github.com/kuzzleio/kuzzle) features are accessible through a secured API. It can be used through a large choice of protocols such as REST, Websocket or Message Queuing protocols.
+It combines a high level API, a database, a real-time engine, subscription and notification mechanisms as well as some advanced search features. The API is accessible through several standard protocols. 
+
+http://kuzzle.io
