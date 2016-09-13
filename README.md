@@ -23,6 +23,7 @@ Sample:
 
 ```json
 {
+  "threads": 2,
   "services": {
     "file": {
       "level": "warn",
@@ -65,8 +66,8 @@ Please refer to [Kuzzle plugin documentation](http://kuzzle.io/guide/#plugins) f
 
 # About Kuzzle
 
-Kuzzle is an open-source back-end solution for various applications. 
+Kuzzle is an open-source back-end solution for various applications.
 
-It combines a high level API, a database, a real-time engine, subscription and notification mechanisms as well as some advanced search features. The API is accessible through several standard protocols. 
+It combines a high level API, a database, a real-time engine, subscription and notification mechanisms as well as some advanced search features. The API is accessible through several standard protocols.
 
 http://kuzzle.io
