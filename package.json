@@ -1,6 +1,6 @@
 {
   "name": "kuzzle-plugin-logger",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
@@ -24,6 +24,7 @@
   },
   "pluginInfo": {
     "defaultConfig": {
+      "threads": 2,
       "services": {
         "file": {
           "outputs": {
@@ -47,11 +48,11 @@
     "winston-syslog": "^1.2.1"
   },
   "devDependencies": {
-    "eslint": "2.5.3",
+    "eslint": "3.5.0",
     "istanbul": "^0.4.4",
-    "mocha": "2.4.5",
+    "mocha": "3.0.2",
     "rewire": "^2.5.2",
-    "should": "8.3.0",
+    "should": "11.1.0",
     "should-sinon": "0.0.5",
     "sinon": "^1.17.5"
   },
