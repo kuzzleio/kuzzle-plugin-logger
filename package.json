@@ -4,7 +4,7 @@
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "npm run --silent lint && npm run --silent unit-tests",
+    "test": "npm run --silent lint && npm run --silent unit-tests --coverage",
     "unit-tests": "istanbul test _mocha",
     "lint": "eslint --max-warnings=0 ./test ./lib"
   },
