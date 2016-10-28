@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/kuzzleio/kuzzle-plugin-logger.svg?branch=master)](https://travis-ci.org/kuzzleio/kuzzle-plugin-logger)
-![logo](http://kuzzle.io/images/logoS.png)
 
 # Kuzzle logger plugin
 
