@@ -123,15 +123,6 @@ describe('index', () => {
       should(context.winston.log.getCall(0).args[1]).be.exactly('____ [EVENT] message');
     });
 
-    it('should prefix the log and format the response as metadata if the message is an object', () => {
-      log.call(context, 'level', 'event', {some: 'message'});
-
-      should(context.winston.log).be.calledOnce();
-      should(context.winston.log.getCall(0).args[0]).be.exactly('level');
-      should(context.winston.log.getCall(0).args[1]).match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2} \[EVENT\] $/);
-      should(context.winston.log.getCall(0).args[2]).be.eql({some: 'message'});
-    });
-
     it('should not prefix the log with some date if addDate is falsy', () => {
       context.addDate = false;
 
@@ -140,17 +131,6 @@ describe('index', () => {
       should(context.winston.log).be.calledOnce();
       should(context.winston.log.getCall(0).args[0]).be.exactly('level');
       should(context.winston.log.getCall(0).args[1]).be.exactly('[EVENT] message');
-    });
-
-    it('should not prefix the log with some date if addDate is falsy and the message is an object', () => {
-      context.addDate = false;
-
-      log.call(context, 'level', 'event', {some: 'message'});
-
-      should(context.winston.log).be.calledOnce();
-      should(context.winston.log.getCall(0).args[0]).be.exactly('level');
-      should(context.winston.log.getCall(0).args[1]).be.exactly('[EVENT] ');
-      should(context.winston.log.getCall(0).args[2]).be.eql({some: 'message'});
     });
   });
 
