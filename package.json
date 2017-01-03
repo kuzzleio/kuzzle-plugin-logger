@@ -1,6 +1,6 @@
 {
   "name": "kuzzle-plugin-logger",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   },
   "pluginInfo": {
     "defaultConfig": {
-      "threads": 2,
+      "threads": 1,
       "services": {
         "file": {
           "outputs": {
