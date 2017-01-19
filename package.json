@@ -24,7 +24,6 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "lodash.merge": "^4.6.0",
     "moment": "^2.14.1",
     "winston": "2.2.0",
     "winston-syslog": "^1.2.1"
