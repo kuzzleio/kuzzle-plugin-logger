@@ -22,27 +22,9 @@
   "bugs": {
     "url": "https://github.com/kuzzleio/kuzzle-plugin-logger/issues"
   },
-  "pluginInfo": {
-    "defaultConfig": {
-      "threads": 1,
-      "services": {
-        "file": {
-          "outputs": {
-            "error": {
-              "level": "warn",
-              "filename": "kuzzle.log"
-            }
-          },
-          "addDate": true
-        },
-        "stdout": {
-          "level": "info"
-        }
-      }
-    }
-  },
   "license": "Apache-2.0",
   "dependencies": {
+    "lodash.merge": "^4.6.0",
     "moment": "^2.14.1",
     "winston": "2.2.0",
     "winston-syslog": "^1.2.1"
