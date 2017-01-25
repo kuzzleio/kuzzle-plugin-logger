@@ -50,14 +50,6 @@ describe('index', () => {
 
   describe('#init', () => {
 
-    it('should throw if no config is given', () => {
-      return should(() => plugin.init()).throw('plugin-logger: A configuration is required for plugin logger');
-    });
-
-    it('should throw if no services are configured', () => {
-      return should(() => plugin.init({})).throw('plugin-logger: The \'services\' attribute, with services configurations to use is required');
-    });
-
     it('should return the plugin if no error occurred', () => {
       var response = plugin.init({services: {}});
 
