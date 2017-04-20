@@ -1,50 +1,68 @@
-var
-  rewire = require('rewire'),
+/*
+ * Kuzzle, a backend software, self-hostable and ready to use
+ * to power modern apps
+ *
+ * Copyright 2015 Kuzzle
+ * mailto: support AT kuzzle.io
+ * website: http://kuzzle.io
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+const
+  mock = require('mock-require'),
   sinon = require('sinon'),
-  should = require('should'),
-  service = rewire('../../lib/services/syslog');
+  should = require('should');
 
 describe('services/syslog', () => {
-  var
-    log = function () {},
+  let
     winstonMock,
-    reset;
+    Syslog,
+    syslog;
 
   beforeEach(() => {
-    reset = service.__set__({
-      winston: {
-        config: {
-          syslog: {
-            levels: 'levels'
-          }
-        },
-        Logger: sinon.spy(),
-        setLevels: sinon.spy(),
-        transports: {
-          Syslog: sinon.spy()
+    winstonMock = {
+      config: {
+        syslog: {
+          levels: 'levels'
         }
+      },
+      Logger: sinon.spy(),
+      setLevels: sinon.spy(),
+      transports: {
+        Syslog: sinon.spy()
       }
-    });
-    winstonMock = service.__get__('winston');
+    };
+    mock('winston', winstonMock);
+    Syslog = mock.reRequire('../../lib/services/syslog');
   });
 
-  afterEach(() => {
-    reset();
+  after(() => {
+    mock.stopAll();
   });
 
   it('should use syslog levels', () => {
-    service.init({}, log);
+    syslog = new Syslog({});
 
     should(winstonMock.setLevels).be.calledOnce();
     should(winstonMock.setLevels).be.calledWithExactly(winstonMock.config.syslog.levels);
   });
 
   it('should set the default values if none are provided', () => {
-    service.init({}, log);
+    syslog = new Syslog({});
 
-    should(service.addDate).be.true();
-    should(service.dateFormat).be.undefined();
-    should(service.log).be.eql(log.bind(service));
+    should(syslog.addDate).be.true();
+    should(syslog.dateFormat).be.undefined();
     should(winstonMock.Logger).be.calledOnce();
     should(winstonMock.transports.Syslog).be.calledOnce();
     should(winstonMock.transports.Syslog).be.calledWith({
@@ -53,7 +71,7 @@ describe('services/syslog', () => {
   });
 
   it('should set the given parameters', () => {
-    service.init({
+    syslog = new Syslog({
       level: 'debug',
       addDate: 'addDate',
       dateFormat: 'dateFormat',
@@ -67,11 +85,10 @@ describe('services/syslog', () => {
       type: 'type',
       app_name: 'app_name',
       eol: 'eol'
-    }, log);
+    });
 
-    should(service.addDate).be.exactly('addDate');
-    should(service.dateFormat).be.exactly('dateFormat');
-    should(service.log).be.eql(log.bind(service));
+    should(syslog.addDate).be.exactly('addDate');
+    should(syslog.dateFormat).be.exactly('dateFormat');
     should(winstonMock.Logger).be.calledOnce();
     should(winstonMock.transports.Syslog).be.calledOnce();
     should(winstonMock.transports.Syslog).be.calledWith({
