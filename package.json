@@ -40,5 +40,7 @@
     "should-sinon": "0.0.5",
     "sinon": "^1.17.5"
   },
-  "_from": "kuzzle-plugin-logger@2.0.3"
+  "engines": {
+    "node": ">=6.9.1"
+  }
 }
