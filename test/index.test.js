@@ -2,7 +2,7 @@
  * Kuzzle, a backend software, self-hostable and ready to use
  * to power modern apps
  *
- * Copyright 2015 Kuzzle
+ * Copyright 2015-2017 Kuzzle
  * mailto: support AT kuzzle.io
  * website: http://kuzzle.io
  *
@@ -19,8 +19,16 @@
  * limitations under the License.
  */
 
+class InternalErrorMock extends Error {
+  constructor (msg) {
+    super(msg);
+
+    this.status = 500;
+    this.message = msg;
+  }
+}
+
 const
-  InternalError = require('kuzzle-common-objects').errors.InternalError,
   mock = require('mock-require'),
   should = require('should'),
   sinon = require('sinon');
@@ -34,10 +42,10 @@ describe('index', () => {
   beforeEach(() => {
     context = {
       errors: {
-        InternalError
+        InternalError: InternalErrorMock
       }
     };
-    Plugin = require('../lib'),
+    Plugin = require('../lib');
     plugin = new Plugin();
   });
 
@@ -78,7 +86,7 @@ describe('index', () => {
           }
         }
       }, context))
-        .throw(InternalError);
+        .throw(InternalErrorMock);
     });
 
     it('should return the plugin if no error occurred', () => {
