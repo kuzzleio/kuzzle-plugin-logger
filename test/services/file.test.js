@@ -1,60 +1,86 @@
-var
-  rewire = require('rewire'),
+/*
+ * Kuzzle, a backend software, self-hostable and ready to use
+ * to power modern apps
+ *
+ * Copyright 2015-2017 Kuzzle
+ * mailto: support AT kuzzle.io
+ * website: http://kuzzle.io
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+const
+  mock = require('mock-require'),
   sinon = require('sinon'),
   should = require('should'),
-  serviceFile = rewire('../../lib/services/file');
+  Service = require('../../lib/services/service');
 
 describe('services/file', function () {
-  var
-    log = function () {
-    },
-    winstonMock,
-    reset;
+  let
+    ServiceFile,
+    serviceFile,
+    winstonMock;
 
   beforeEach(() => {
-    reset = serviceFile.__set__({
-      winston: {
-        Logger: sinon.spy(),
-        transports: {
-          File: sinon.stub().returnsArg(0)
-        }
+    winstonMock = {
+      Logger: sinon.spy(),
+      transports: {
+        File: sinon.stub().returnsArg(0)
       }
-    });
-    winstonMock = serviceFile.__get__('winston');
+    };
+    mock('winston', winstonMock);
+    ServiceFile = mock.reRequire('../../lib/services/file');
   });
 
-  afterEach(() => {
-    reset();
+  after(() => {
+    mock.stopAll();
+  });
+
+  it('should be an instance of Service', () => {
+    serviceFile = new ServiceFile({});
+    should(serviceFile).be.an.instanceof(Service);
   });
 
   it('should set default values if not provided', () => {
-    var transportArgs;
+    let transportArgs;
 
-    serviceFile.init({}, log);
+    serviceFile = new ServiceFile({});
 
-    should(serviceFile.addDate).be.false();
+    should(serviceFile.addDate).be.null();
     should(serviceFile.dateFormat).be.undefined();
-    should(serviceFile.log).be.eql(log.bind(serviceFile));
     should(winstonMock.Logger).be.calledOnce();
     should(winstonMock.transports.File).be.calledOnce();
 
     transportArgs = winstonMock.transports.File.firstCall.returnValue;
     should(transportArgs).match({
-      json: false,
       level: 'error',
       filename: 'kuzzle.log'
     });
-    should(transportArgs.formatter).be.a.Function();
   });
 
   it('should set the given options', () => {
-    var transportArgs;
+    let transportArgs;
 
-    serviceFile.init({level: 'debug', filename: 'test', addDate: 'addDate', dateFormat: 'dtTest'}, log);
+    serviceFile = new ServiceFile({
+      json: false,
+      level: 'debug', 
+      filename: 'test', 
+      addDate: 'addDate', 
+      dateFormat: 'dtTest'
+    });
 
-    should(serviceFile.addDate).be.false();
-    should(serviceFile.dateFormat).be.undefined();
-    should(serviceFile.log).be.eql(log.bind(serviceFile));
+    should(serviceFile.addDate).be.true();
+    should(serviceFile.dateFormat).be.eql('dtTest');
     should(winstonMock.Logger).be.calledOnce();
     should(winstonMock.transports.File).be.calledOnce();
 
@@ -64,7 +90,6 @@ describe('services/file', function () {
       level: 'debug',
       filename: 'test'
     });
-    should(transportArgs.formatter).be.a.Function();
   });
 
 });

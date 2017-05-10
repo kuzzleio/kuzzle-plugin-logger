@@ -1,6 +1,6 @@
 {
   "name": "kuzzle-plugin-logger",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
@@ -32,10 +32,13 @@
     "eslint": "3.5.0",
     "istanbul": "^0.4.4",
     "mocha": "3.0.2",
+    "mock-require": "^2.0.2",
     "rewire": "^2.5.2",
     "should": "11.1.0",
     "should-sinon": "0.0.5",
     "sinon": "^1.17.5"
   },
-  "_from": "kuzzle-plugin-logger@2.0.3"
+  "engines": {
+    "node": ">=6.9.1"
+  }
 }
