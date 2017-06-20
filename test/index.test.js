@@ -1,35 +1,63 @@
-var
-  rewire = require('rewire'),
+/*
+ * Kuzzle, a backend software, self-hostable and ready to use
+ * to power modern apps
+ *
+ * Copyright 2015-2017 Kuzzle
+ * mailto: support AT kuzzle.io
+ * website: http://kuzzle.io
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+class InternalErrorMock extends Error {
+  constructor (msg) {
+    super(msg);
+
+    this.status = 500;
+    this.message = msg;
+  }
+}
+
+const
+  mock = require('mock-require'),
   should = require('should'),
-  sinon = require('sinon'),
-  Plugin = rewire('../lib'),
-  hooks = require('../lib/config/hooks');
+  sinon = require('sinon');
 
 describe('index', () => {
-  var
-    plugin;
+  let
+    Plugin,
+    plugin,
+    context;
 
   beforeEach(() => {
+    context = {
+      errors: {
+        InternalError: InternalErrorMock
+      }
+    };
+    Plugin = require('../lib');
     plugin = new Plugin();
   });
 
   describe('#constructor', () => {
     it('should implement all methods listed in hooks', () => {
-      Object.keys(hooks).forEach(k => {
-        should(plugin[hooks[k]]).be.a.Function();
-      });
-    });
-
-    it('all hook methods should return false if dummy', () => {
-      plugin.isDummy = true;
-
-      Object.keys(hooks).forEach(k => {
-        should(plugin[hooks[k]]()).be.false();
+      Object.keys(plugin.hooks).forEach(k => {
+        should(plugin[plugin.hooks[k]]).be.a.Function();
       });
     });
 
     it('all hook methods should call the loggers', () => {
-      Object.keys(hooks).forEach(k => {
+      Object.keys(plugin.hooks).forEach(k => {
         plugin = new Plugin();
 
         plugin.loggers = [
@@ -37,7 +65,7 @@ describe('index', () => {
           { log: sinon.spy() }
         ];
 
-        plugin[hooks[k]]('message', 'event');
+        plugin[plugin.hooks[k]]('message', 'event');
 
         plugin.loggers.forEach(logger => {
           should(logger.log).be.calledOnce();
@@ -50,80 +78,48 @@ describe('index', () => {
 
   describe('#init', () => {
 
+    it('should throw if the config references a non-existing transport', () => {
+      should(() => plugin.init({
+        services: {
+          nonexisting: {
+            foo: 'bar'
+          }
+        }
+      }, context))
+        .throw(InternalErrorMock);
+    });
+
     it('should return the plugin if no error occurred', () => {
-      var response = plugin.init({services: {}});
+      const response = plugin.init();
 
       should(response).be.an.instanceOf(Plugin);
+      should(plugin.loggers)
+        .be.an.Array()
+        .not.be.empty();
     });
 
     it('should init the services', () => {
-      var
-        log = Plugin.__get__('log'),
-        initSpy = sinon.spy();
+      const
+        spy = sinon.spy();
 
-      Plugin.__with__({
-        require: () => () => {
-          return {
-            init: initSpy
-          };
-        }
-      })(() => {
-        plugin.init({
-          services: {
-            test: {
-              foo: 'bar'
-            }
-          }
-        });
-
-        should(initSpy).be.calledOnce();
-        should(initSpy).be.calledWith({foo: 'bar'}, log);
+      mock('../lib/services', {
+        test: spy
       });
-    });
+      Plugin = mock.reRequire('../lib');
+      plugin = new Plugin();
 
-  });
-
-  describe('#log', () => {
-    var
-      context,
-      log = Plugin.__get__('log');
-
-    beforeEach(() => {
-      context = {
-        addDate: true,
-        winston: {
-          log: sinon.spy()
+      plugin.init({
+        services: {
+          test: {
+            foo: 'bar'
+          }
         }
-      };
+      });
+
+      should(spy).be.calledOnce();
+      should(spy).be.calledWith({foo: 'bar'});
     });
 
-    it('should prefix the log with some date if addDate is truthy', () => {
-      log.call(context, 'level', 'event', 'message');
-
-      should(context.winston.log).be.calledOnce();
-      should(context.winston.log.getCall(0).args[0]).be.exactly('level');
-      should(context.winston.log.getCall(0).args[1]).match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2} \[EVENT\] message/);
-    });
-
-    it('should prefix the log with some date formatted as requested is addDate is truthy', () => {
-      context.dateFormat = '____';
-
-      log.call(context, 'level', 'event', 'message');
-
-      should(context.winston.log).be.calledOnce();
-      should(context.winston.log.getCall(0).args[0]).be.exactly('level');
-      should(context.winston.log.getCall(0).args[1]).be.exactly('____ [EVENT] message');
-    });
-
-    it('should not prefix the log with some date if addDate is falsy', () => {
-      context.addDate = false;
-
-      log.call(context, 'level', 'event', 'message');
-
-      should(context.winston.log).be.calledOnce();
-      should(context.winston.log.getCall(0).args[0]).be.exactly('level');
-      should(context.winston.log.getCall(0).args[1]).be.exactly('[EVENT] message');
-    });
   });
 
 });

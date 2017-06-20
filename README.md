@@ -12,11 +12,16 @@ Currently, three winston transports are supported:
 * `syslog` (from [winston-syslog](https://www.npmjs.com/package/winston-syslog))
 
 
-## Manifest
-
-This plugin doesn't need any right.
-
 ## Configuration
+
+Each transport can be added and configured by adding it to the `services` entry.
+
+The content of this section is _almost_ passed as-is to `winston` related transport constructor.
+
+The only exception is `addDate` and `dateFormat` parameters, which are specific to Kuzzle and allow to specify a custom 
+date format using only plain-text configuration, using [moment format](http://momentjs.com/docs/#/displaying/format/).
+
+:warning: **Contrary to winston, it is not possible to pass a function to any option.**
 
 Sample:
 
@@ -27,7 +32,8 @@ Sample:
     "file": {
       "level": "warn",
       "filename": "kuzzle.log",
-      "addDate": true
+      "addDate": true,
+      "dateFormat": "dddd, MMMM Do YYYY, h:mm:ss a"
     },
     "stdout": {
       "level": "info",
@@ -42,22 +48,32 @@ Sample:
 }
 ```
 
-## stdout
+## Default configuration
 
-* **level**: maximal level to log (Default: `error`)
-* **addDate** `true|false` if set to true, prefix all logs with the current date (default: `true`)
-* **dateFormat**: A string in [moment format syntax](http://momentjs.com/docs/#/displaying/) used to format the prefixed date (Default: ISO8601: `YYYY-MM-DDTHH:mm:ssZ`).
+If no configuration is given, this plugin will output logs to the console only, from `info` level and above.
 
-## file
+## Transports configuration references
 
-* **level**: maximal level to log (Default: `error`)
-* **filename**: path of the log file (Default: `kuzzle.log`)
-* **addDate** `true|false` if set to true, prefix all logs with the current date (default: `true`)
-* **dateFormat**: A string in [moment format syntax](http://momentjs.com/docs/#/displaying/) used to format the prefixed date (Default: ISO8601: `YYYY-MM-DDTHH:mm:ssZ`).
+* [stdout](https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport)
+* [file](https://github.com/winstonjs/winston/blob/master/docs/transports.md#file-transport)
+* [syslog](https://github.com/winstonjs/winston-syslog)
 
-## syslog
+## Date formatting
 
-In addition to the `level`, `addDate`, ans `dateFormat` parameter, the syslog configuration takes the same parameters as [winston-syslog](https://github.com/winstonjs/winston-syslog) module ones.
+Native `winston` date related/timestamp configurations are merged during the plugin init for transports that support it.
+
+In other words, `timestamp` and `addDate` can be used indifferently for `stdout` and `file` transports: 
+
+```json
+{
+  "services": {
+    "stdout": {
+      "timestamp": true,
+      "dateFormat": "YYYY-MM-DD HH-mm-ss"
+    }
+  }
+}
+```
 
 # How to create a plugin
 
