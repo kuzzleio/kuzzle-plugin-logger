@@ -49,31 +49,106 @@ describe('index', () => {
     plugin = new Plugin();
   });
 
-  describe('#constructor', () => {
+  describe('#methods', () => {
+    beforeEach(() => {
+      sinon.spy(plugin, '_prepareMessage');
+
+      plugin.loggers = [
+        { log: sinon.spy() },
+        { log: sinon.spy() }
+      ];
+    });
+
     it('should implement all methods listed in hooks', () => {
       Object.keys(plugin.hooks).forEach(k => {
         should(plugin[plugin.hooks[k]]).be.a.Function();
       });
     });
 
-    it('all hook methods should call the loggers', () => {
+    it('hook methods to their appropriate loggers', () => {
       Object.keys(plugin.hooks).forEach(k => {
-        plugin = new Plugin();
-
-        plugin.loggers = [
-          { log: sinon.spy() },
-          { log: sinon.spy() }
-        ];
-
         plugin[plugin.hooks[k]]('message', 'event');
+        should(plugin._prepareMessage).calledOnce().calledWith('message');
 
         plugin.loggers.forEach(logger => {
           should(logger.log).be.calledOnce();
-          should(logger.log).be.calledWith(k.replace(/^log:/, ''), 'event', 'message');
+          should(logger.log).be.calledWith(
+            k.replace(/^log:/, ''),
+            'event',
+            'message');
+
+          logger.log.resetHistory();
         });
+
+        plugin._prepareMessage.resetHistory();
       });
     });
 
+    it('should properly pretty print non-error objects', () => {
+      plugin.error({foo: 'bar'}, 'event');
+      should(plugin._prepareMessage).calledOnce().calledWithMatch({foo: 'bar'});
+      for (const logger of plugin.loggers) {
+        should(logger.log)
+          .calledOnce()
+          .calledWith('error', 'event', plugin._prepareMessage.returnValues[0]);
+      }
+    });
+
+    it('should pretty print plain Error objects', () => {
+      const error = new Error('foobar');
+
+      plugin.error(error, 'event');
+
+      should(plugin._prepareMessage.notCalled).be.True();
+
+      for (const logger of plugin.loggers) {
+        should(logger.log)
+          .calledOnce()
+          .calledWith('error', 'event', error.stack);
+      }
+    });
+
+    it('should pretty print serialized plain Error objects with no stack', () => {
+      const error = {message: 'foobar'};
+
+      plugin.error(error, 'event');
+
+      should(plugin._prepareMessage.notCalled).be.True();
+
+      for (const logger of plugin.loggers) {
+        should(logger.log)
+          .calledOnce()
+          .calledWith('error', 'event', error.message);
+      }
+    });
+
+    it('should pretty print Kuzzle errors with stack', () => {
+      const error = new InternalErrorMock('foobar');
+
+      plugin.error(error, 'event');
+
+      should(plugin._prepareMessage.notCalled).be.True();
+
+      for (const logger of plugin.loggers) {
+        should(logger.log)
+          .calledOnce()
+          .calledWith('error', 'event', `(${error.status}) ${error.stack}`);
+      }
+    });
+
+    it('should pretty print serialized Kuzzle errors', () => {
+      const error = {message: 'foobar', status: 500};
+
+      plugin.error(error, 'event');
+
+      should(plugin._prepareMessage.notCalled).be.True();
+
+      for (const logger of plugin.loggers) {
+        should(logger.log)
+          .calledOnce()
+          .calledWith('error', 'event', `(${error.status}) ${error.message}`);
+      }
+    });
   });
 
   describe('#init', () => {
