@@ -8,9 +8,6 @@
   <a href="https://travis-ci.com/kuzzleio/kuzzle-plugin-logger">
     <img alt="undefined" src="https://travis-ci.com/kuzzleio/kuzzle-plugin-logger.svg?branch=master">
   </a>
-  <a href="https://codecov.io/gh/kuzzleio/kuzzle-plugin-logger">
-    <img src="https://codecov.io/gh/kuzzleio/kuzzle-plugin-logger/branch/master/graph/badge.svg" />
-  </a>
   <a href="https://github.com/kuzzleio/kuzzle-plugin-logger/blob/master/LICENSE">
     <img alt="undefined" src="https://img.shields.io/github/license/kuzzleio/kuzzle-plugin-logger.svg?style=flat">
   </a>
@@ -50,6 +47,13 @@ Please refer to [Kuzzle plugin development documentation](https://docs.kuzzle.io
 Train yourself and your teams to use Kuzzle to maximize its potential and accelerate the development of your projects.  
 Our teams will be able to meet your needs in terms of expertise and multi-technology support for IoT, mobile/web, backend/frontend, devops.  
 :point_right: [Get a quote](https://hubs.ly/H0jkfJ_0)
+
+### Compatibility matrice
+
+| Kuzzle Version | Plugin Version |
+| -------------- | -------------- |
+| 1.8.x          | 2.x.x          | 
+| 2.x.x          | 3.x.x          |
 
 ## Configuration
 
