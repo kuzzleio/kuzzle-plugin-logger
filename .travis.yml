@@ -1,12 +1,12 @@
+---
 language: node_js
-node_js:
-- 6.9
+node_js: 6
 before_script:
-- npm install -g grunt-cli
+  - npm install -g grunt-cli
 notifications:
   webhooks:
     urls:
-    - https://webhooks.gitter.im/e/8e145155fbaaf37cffea
+      - https://webhooks.gitter.im/e/8e145155fbaaf37cffea
     on_success: change
     on_failure: always
     on_start: never
