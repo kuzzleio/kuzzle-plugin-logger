@@ -33,7 +33,7 @@ describe('services/stdout', function () {
 
   beforeEach(() => {
     winstonMock = {
-      Logger: sinon.spy(),
+      createLogger: sinon.spy(),
       transports: {
         Console: sinon.spy()
       }
@@ -58,7 +58,7 @@ describe('services/stdout', function () {
 
     should(serviceStdout.addDate).be.true();
     should(serviceStdout.dateFormat).be.undefined();
-    should(winstonMock.Logger).be.calledOnce();
+    should(winstonMock.createLogger).be.calledOnce();
     should(winstonMock.transports.Console).be.calledOnce();
     should(winstonMock.transports.Console).be.calledWith({
       level: 'error'
@@ -70,7 +70,7 @@ describe('services/stdout', function () {
 
     should(serviceStdout.addDate).be.exactly('addDate');
     should(serviceStdout.dateFormat).be.exactly('dateFormat');
-    should(winstonMock.Logger).be.calledOnce();
+    should(winstonMock.createLogger).be.calledOnce();
     should(winstonMock.transports.Console).be.calledOnce();
     should(winstonMock.transports.Console).be.calledWith({
       level: 'debug'
