@@ -15,7 +15,6 @@
 
 ## About
 
-
 ### Kuzzle Logger Plugin
 
 This plugin is a bridge between Kuzzle and the [winston](https://www.npmjs.com/package/winston) package.
@@ -117,4 +116,3 @@ In other words, `timestamp` and `addDate` can be used indifferently for `stdout`
   }
 }
 ```
-
