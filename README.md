@@ -15,10 +15,9 @@
 
 ## About
 
-
 ### Kuzzle Logger Plugin
 
-This plugin is a bridge between Kuzzle and [winston](https://www.npmjs.com/package/winston) package.
+This plugin is a bridge between Kuzzle and the [winston](https://www.npmjs.com/package/winston) package.
 It is part of the default plugins provided with Kuzzle.
 
 Currently, three winston transports are supported:
@@ -40,7 +39,7 @@ It also provides you with a flexible and powerful user-management system.
 
 ### How to create a plugin
 
-Please refer to [Kuzzle plugin development documentation](https://docs.kuzzle.io/core/1/plugins/essentials/introduction) for more information on how to build you own plugins.
+Please refer to [Kuzzle plugin development documentation](https://docs.kuzzle.io/core/2/plugins/essentials/introduction) for more information on how to build you own plugins.
 
 ### Get trained by the creators of Kuzzle :zap:
 
@@ -48,7 +47,7 @@ Train yourself and your teams to use Kuzzle to maximize its potential and accele
 Our teams will be able to meet your needs in terms of expertise and multi-technology support for IoT, mobile/web, backend/frontend, devops.  
 :point_right: [Get a quote](https://hubs.ly/H0jkfJ_0)
 
-### Compatibility matrice
+### Compatibility matrix
 
 | Kuzzle Version | Plugin Version |
 | -------------- | -------------- |
@@ -117,4 +116,3 @@ In other words, `timestamp` and `addDate` can be used indifferently for `stdout`
   }
 }
 ```
-

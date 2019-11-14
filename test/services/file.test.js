@@ -33,7 +33,7 @@ describe('services/file', function () {
 
   beforeEach(() => {
     winstonMock = {
-      Logger: sinon.spy(),
+      createLogger: sinon.spy(),
       transports: {
         File: sinon.stub().returnsArg(0)
       }
@@ -58,7 +58,7 @@ describe('services/file', function () {
 
     should(serviceFile.addDate).be.null();
     should(serviceFile.dateFormat).be.undefined();
-    should(winstonMock.Logger).be.calledOnce();
+    should(winstonMock.createLogger).be.calledOnce();
     should(winstonMock.transports.File).be.calledOnce();
 
     transportArgs = winstonMock.transports.File.firstCall.returnValue;
@@ -73,15 +73,15 @@ describe('services/file', function () {
 
     serviceFile = new ServiceFile({
       json: false,
-      level: 'debug', 
-      filename: 'test', 
-      addDate: 'addDate', 
+      level: 'debug',
+      filename: 'test',
+      addDate: 'addDate',
       dateFormat: 'dtTest'
     });
 
     should(serviceFile.addDate).be.true();
     should(serviceFile.dateFormat).be.eql('dtTest');
-    should(winstonMock.Logger).be.calledOnce();
+    should(winstonMock.createLogger).be.calledOnce();
     should(winstonMock.transports.File).be.calledOnce();
 
     transportArgs = winstonMock.transports.File.firstCall.returnValue;

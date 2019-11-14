@@ -37,7 +37,7 @@ describe('services/syslog', () => {
           levels: 'levels'
         }
       },
-      Logger: sinon.spy(),
+      createLogger: sinon.spy(),
       setLevels: sinon.spy(),
       transports: {
         Syslog: sinon.spy()
@@ -63,7 +63,7 @@ describe('services/syslog', () => {
 
     should(syslog.addDate).be.true();
     should(syslog.dateFormat).be.undefined();
-    should(winstonMock.Logger).be.calledOnce();
+    should(winstonMock.createLogger).be.calledOnce();
     should(winstonMock.transports.Syslog).be.calledOnce();
     should(winstonMock.transports.Syslog).be.calledWith({
       level: 'error'
@@ -89,7 +89,7 @@ describe('services/syslog', () => {
 
     should(syslog.addDate).be.exactly('addDate');
     should(syslog.dateFormat).be.exactly('dateFormat');
-    should(winstonMock.Logger).be.calledOnce();
+    should(winstonMock.createLogger).be.calledOnce();
     should(winstonMock.transports.Syslog).be.calledOnce();
     should(winstonMock.transports.Syslog).be.calledWith({
       level: 'debug',
