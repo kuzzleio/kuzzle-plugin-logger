@@ -57,17 +57,22 @@ describe('index', () => {
         { log: sinon.spy() },
         { log: sinon.spy() }
       ];
+
+      // simulate kuzzle auto binding
+      for (const [event, handler] of Object.entries(plugin.hooks)) {
+        plugin.hooks[event] = handler.bind(plugin);
+      }
     });
 
     it('should implement all methods listed in hooks', () => {
       Object.keys(plugin.hooks).forEach(k => {
-        should(plugin[plugin.hooks[k]]).be.a.Function();
+        should(plugin.hooks[k]).be.a.Function();
       });
     });
 
     it('hook methods to their appropriate loggers', () => {
       Object.keys(plugin.hooks).forEach(k => {
-        plugin[plugin.hooks[k]]('message', 'event');
+        plugin.hooks[k]('message', 'event');
         should(plugin._prepareMessage).calledOnce().calledWith('message');
 
         plugin.loggers.forEach(logger => {
@@ -164,10 +169,9 @@ describe('index', () => {
         .throw(InternalErrorMock);
     });
 
-    it('should return the plugin if no error occurred', () => {
-      const response = plugin.init();
+    it('should init the plugin without errors', () => {
+      plugin.init();
 
-      should(response).be.an.instanceOf(Plugin);
       should(plugin.loggers)
         .be.an.Array()
         .not.be.empty();
