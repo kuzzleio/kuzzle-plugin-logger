@@ -19,11 +19,12 @@
  * limitations under the License.
  */
 
-const
-  mock = require('mock-require'),
-  sinon = require('sinon'),
-  should = require('should'),
-  Service = require('../../lib/services/service');
+const mock = require('mock-require');
+const sinon = require('sinon');
+const should = require('should');
+const Service = require('../../lib/services/service');
+const fs = require('fs');
+
 
 describe('services/file', function () {
   let
@@ -74,7 +75,6 @@ describe('services/file', function () {
     serviceFile = new ServiceFile({
       json: false,
       level: 'debug',
-      filename: 'test',
       addDate: 'addDate',
       dateFormat: 'dtTest'
     });
@@ -88,8 +88,30 @@ describe('services/file', function () {
     should(transportArgs).match({
       json: false,
       level: 'debug',
-      filename: 'test'
+      filename: 'kuzzle.log'
     });
+  });
+
+  it('should log Error if file does not exits', () => {
+    try {
+      serviceFile = new ServiceFile({
+        filename: './log/kuzzle.log'
+      });
+    } catch (error) {
+      should(error).be.an.Error();
+    }
+  });
+
+  it('should init correctly if file exists', () => {
+    fs.mkdirSync('./log');
+    fs.writeFileSync('./log/kuzzle.log', 'init');
+
+    serviceFile = new ServiceFile({
+      filename: './log/kuzzle.log'
+    });
+
+    fs.unlinkSync('./log/kuzzle.log');
+    fs.rmdirSync('./log');
   });
 
 });
