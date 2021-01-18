@@ -25,9 +25,10 @@
   "license": "Apache-2.0",
   "dependencies": {
     "moment": "^2.24.0",
+    "pino": "^6.11.0",
     "triple-beam": "^1.3.0",
     "winston": "^3.2.1",
-    "winston-syslog": "2.3.0",
+    "winston-syslog": "2.4.4",
     "winston-transport": "^4.3.0"
   },
   "devDependencies": {
