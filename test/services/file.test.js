@@ -23,16 +23,16 @@ const mock = require('mock-require');
 const sinon = require('sinon');
 const should = require('should');
 const Service = require('../../lib/services/service');
-const fs = require('fs');
+const mockFs = require('mock-fs');
 
 
 describe('services/file', function () {
-  let
-    ServiceFile,
-    serviceFile,
-    winstonMock;
+  let ServiceFile;
+  let serviceFile;
+  let winstonMock;
 
   beforeEach(() => {
+    /** winstonMock */
     winstonMock = {
       createLogger: sinon.spy(),
       transports: {
@@ -40,6 +40,8 @@ describe('services/file', function () {
       }
     };
     mock('winston', winstonMock);
+
+    /** ServiceFile */
     ServiceFile = mock.reRequire('../../lib/services/file');
   });
 
@@ -103,15 +105,15 @@ describe('services/file', function () {
   });
 
   it('should init correctly if file exists', () => {
-    fs.mkdirSync('./log');
-    fs.writeFileSync('./log/kuzzle.log', 'init');
+    mockFs({
+      './log/kuzzle.log': 'This is some test data put into a test file'
+    });
 
     serviceFile = new ServiceFile({
       filename: './log/kuzzle.log'
     });
 
-    fs.unlinkSync('./log/kuzzle.log');
-    fs.rmdirSync('./log');
+    mockFs.restore();
   });
 
 });
