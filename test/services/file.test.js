@@ -32,7 +32,6 @@ describe('services/file', function () {
   let winstonMock;
 
   beforeEach(() => {
-    /** winstonMock */
     winstonMock = {
       createLogger: sinon.spy(),
       transports: {
