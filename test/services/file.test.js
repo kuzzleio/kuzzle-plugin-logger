@@ -40,7 +40,6 @@ describe('services/file', function () {
     };
     mock('winston', winstonMock);
 
-    /** ServiceFile */
     ServiceFile = mock.reRequire('../../lib/services/file');
   });
 
