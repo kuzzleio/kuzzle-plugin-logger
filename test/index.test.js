@@ -33,6 +33,8 @@ const
   should = require('should'),
   sinon = require('sinon');
 
+require('should-sinon');
+
 describe('index', () => {
   let
     Plugin,
