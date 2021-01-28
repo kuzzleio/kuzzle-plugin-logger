@@ -20,7 +20,7 @@
  */
 
 class InternalErrorMock extends Error {
-  constructor (msg) {
+  constructor(msg) {
     super(msg);
 
     this.status = 500;
@@ -85,8 +85,8 @@ describe('index', () => {
     });
 
     it('should properly pretty print non-error objects', () => {
-      plugin.error({foo: 'bar'}, 'event');
-      should(plugin._prepareMessage).calledOnce().calledWithMatch({foo: 'bar'});
+      plugin.error({ foo: 'bar' }, 'event');
+      should(plugin._prepareMessage).calledOnce().calledWithMatch({ foo: 'bar' });
       for (const logger of plugin.loggers) {
         should(logger.log)
           .calledOnce()
@@ -109,7 +109,7 @@ describe('index', () => {
     });
 
     it('should pretty print serialized plain Error objects with no stack', () => {
-      const error = {message: 'foobar'};
+      const error = { message: 'foobar' };
 
       plugin.error(error, 'event');
 
@@ -137,7 +137,7 @@ describe('index', () => {
     });
 
     it('should pretty print serialized Kuzzle errors', () => {
-      const error = {message: 'foobar', status: 500};
+      const error = { message: 'foobar', status: 500 };
 
       plugin.error(error, 'event');
 
@@ -165,7 +165,7 @@ describe('index', () => {
     });
 
     it('should return the plugin if no error occurred', () => {
-      const response = plugin.init();
+      const response = plugin.init({}, context);
 
       should(response).be.an.instanceOf(Plugin);
       should(plugin.loggers)
@@ -174,12 +174,9 @@ describe('index', () => {
     });
 
     it('should init the services', () => {
-      const
-        spy = sinon.spy();
+      const spy = sinon.spy();
 
-      mock('../lib/services', {
-        test: spy
-      });
+      mock('../lib/services', { test: spy });
       Plugin = mock.reRequire('../lib');
       plugin = new Plugin();
 
@@ -188,11 +185,11 @@ describe('index', () => {
           test: {
             foo: 'bar'
           }
-        }
-      });
+        },
+      }, context);
 
       should(spy).be.calledOnce();
-      should(spy).be.calledWith({foo: 'bar'});
+      should(spy).be.calledWith({ foo: 'bar' });
     });
 
   });

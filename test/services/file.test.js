@@ -19,17 +19,17 @@
  * limitations under the License.
  */
 
-const
-  mock = require('mock-require'),
-  sinon = require('sinon'),
-  should = require('should'),
-  Service = require('../../lib/services/service');
+const mock = require('mock-require');
+const sinon = require('sinon');
+const should = require('should');
+const Service = require('../../lib/services/service');
+const mockFs = require('mock-fs');
+
 
 describe('services/file', function () {
-  let
-    ServiceFile,
-    serviceFile,
-    winstonMock;
+  let ServiceFile;
+  let serviceFile;
+  let winstonMock;
 
   beforeEach(() => {
     winstonMock = {
@@ -39,6 +39,7 @@ describe('services/file', function () {
       }
     };
     mock('winston', winstonMock);
+
     ServiceFile = mock.reRequire('../../lib/services/file');
   });
 
@@ -74,7 +75,6 @@ describe('services/file', function () {
     serviceFile = new ServiceFile({
       json: false,
       level: 'debug',
-      filename: 'test',
       addDate: 'addDate',
       dateFormat: 'dtTest'
     });
@@ -88,8 +88,30 @@ describe('services/file', function () {
     should(transportArgs).match({
       json: false,
       level: 'debug',
-      filename: 'test'
+      filename: 'kuzzle.log'
     });
+  });
+
+  it('should log Error if file does not exits', () => {
+    try {
+      serviceFile = new ServiceFile({
+        filename: './log/kuzzle.log'
+      });
+    } catch (error) {
+      should(error).be.an.Error();
+    }
+  });
+
+  it('should init correctly if file exists', () => {
+    mockFs({
+      './log/kuzzle.log': 'This is some test data put into a test file'
+    });
+
+    serviceFile = new ServiceFile({
+      filename: './log/kuzzle.log'
+    });
+
+    mockFs.restore();
   });
 
 });
