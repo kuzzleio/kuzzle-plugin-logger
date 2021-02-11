@@ -1,0 +1,45 @@
+name: Main branches checks
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-18.04
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+    - uses: actions/setup-node@v1
+      with:
+        node-version: "12"
+    - run: |
+        npm ci
+        npm test
+    
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-18.04
+    timeout-minutes: 30
+    needs: [tests]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
