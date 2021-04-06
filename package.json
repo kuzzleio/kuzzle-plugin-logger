@@ -1,6 +1,6 @@
 {
   "name": "kuzzle-plugin-logger",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
