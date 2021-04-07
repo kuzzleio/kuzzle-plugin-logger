@@ -22,23 +22,33 @@
 const mock = require('mock-require');
 const sinon = require('sinon');
 const should = require('should');
+
 const Service = require('../../lib/services/service');
-const mockFs = require('mock-fs');
 
 
 describe('services/file', function () {
   let ServiceFile;
   let serviceFile;
   let winstonMock;
+  let fsMock;
 
   beforeEach(() => {
+    fsMock = {
+      existsSync: sinon.stub().returns(false),
+      accessSync: sinon.stub(),
+      W_OK: 2,
+      R_OK: 4,
+    };
+
     winstonMock = {
       createLogger: sinon.spy(),
       transports: {
         File: sinon.stub().returnsArg(0)
       }
     };
+
     mock('winston', winstonMock);
+    mock('fs', fsMock);
 
     ServiceFile = mock.reRequire('../../lib/services/file');
   });
@@ -47,71 +57,59 @@ describe('services/file', function () {
     mock.stopAll();
   });
 
-  it('should be an instance of Service', () => {
-    serviceFile = new ServiceFile({});
-    should(serviceFile).be.an.instanceof(Service);
-  });
-
-  it('should set default values if not provided', () => {
-    let transportArgs;
-
-    serviceFile = new ServiceFile({});
-
-    should(serviceFile.addDate).be.null();
-    should(serviceFile.dateFormat).be.undefined();
-    should(winstonMock.createLogger).be.calledOnce();
-    should(winstonMock.transports.File).be.calledOnce();
-
-    transportArgs = winstonMock.transports.File.firstCall.returnValue;
-    should(transportArgs).match({
-      level: 'error',
-      filename: 'kuzzle.log'
-    });
-  });
-
-  it('should set the given options', () => {
-    let transportArgs;
-
-    serviceFile = new ServiceFile({
-      json: false,
-      level: 'debug',
-      addDate: 'addDate',
-      dateFormat: 'dtTest'
+  describe('#constructor', () => {
+    it('should be an instance of Service', () => {
+      serviceFile = new ServiceFile({});
+      should(serviceFile).be.an.instanceof(Service);
     });
 
-    should(serviceFile.addDate).be.true();
-    should(serviceFile.dateFormat).be.eql('dtTest');
-    should(winstonMock.createLogger).be.calledOnce();
-    should(winstonMock.transports.File).be.calledOnce();
+    it('should set default values if not provided', () => {
+      let transportArgs;
 
-    transportArgs = winstonMock.transports.File.firstCall.returnValue;
-    should(transportArgs).match({
-      json: false,
-      level: 'debug',
-      filename: 'kuzzle.log'
-    });
-  });
+      serviceFile = new ServiceFile({});
 
-  it('should log Error if file does not exits', () => {
-    try {
-      serviceFile = new ServiceFile({
-        filename: './log/kuzzle.log'
+      should(serviceFile.addDate).be.null();
+      should(serviceFile.dateFormat).be.undefined();
+      should(winstonMock.createLogger).be.calledOnce();
+      should(winstonMock.transports.File).be.calledOnce();
+
+      transportArgs = winstonMock.transports.File.firstCall.returnValue;
+      should(transportArgs).match({
+        level: 'error',
+        filename: 'kuzzle.log'
       });
-    } catch (error) {
-      should(error).be.an.Error();
-    }
-  });
-
-  it('should init correctly if file exists', () => {
-    mockFs({
-      './log/kuzzle.log': 'This is some test data put into a test file'
     });
 
-    serviceFile = new ServiceFile({
-      filename: './log/kuzzle.log'
+    it('should set the given options', () => {
+      let transportArgs;
+
+      serviceFile = new ServiceFile({
+        json: false,
+        level: 'debug',
+        addDate: 'addDate',
+        dateFormat: 'dtTest'
+      });
+
+      should(serviceFile.addDate).be.true();
+      should(serviceFile.dateFormat).be.eql('dtTest');
+      should(winstonMock.createLogger).be.calledOnce();
+      should(winstonMock.transports.File).be.calledOnce();
+
+      transportArgs = winstonMock.transports.File.firstCall.returnValue;
+      should(transportArgs).match({
+        json: false,
+        level: 'debug',
+        filename: 'kuzzle.log'
+      });
     });
 
-    mockFs.restore();
-  });
+    it('should check access rights if the file exists', () => {
+      fsMock.existsSync.returns(true);
 
+      serviceFile = new ServiceFile({ filename: 'çanakkale.tr' });
+
+      should(fsMock.accessSync)
+        .be.calledWith('çanakkale.tr', fsMock.W_OK | fsMock.R_OK);
+    });
+  });
 });

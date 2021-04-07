@@ -1,11 +1,11 @@
 {
   "name": "kuzzle-plugin-logger",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Kuzzle plugin that handles logs",
   "main": "./lib/index.js",
   "scripts": {
     "test": "npm run --silent lint && npm run --silent unit-tests --coverage",
-    "unit-tests": "istanbul test _mocha",
+    "unit-tests": "istanbul test _mocha test/logger.test.js test/services",
     "lint": "eslint --max-warnings=0 ./test ./lib"
   },
   "repository": {
@@ -31,14 +31,14 @@
     "winston-transport": "^4.4.0"
   },
   "devDependencies": {
-    "eslint": "7.18.0",
+    "eslint": "7.23.0",
     "istanbul": "^0.4.5",
-    "mocha": "8.2.1",
+    "mocha": "8.3.2",
     "mock-require": "^3.0.3",
     "rewire": "^5.0.0",
     "should": "13.2.3",
     "should-sinon": "0.0.6",
-    "sinon": "^9.2.4"
+    "sinon": "^10.0.0"
   },
   "engines": {
     "node": ">=6.9.1"
